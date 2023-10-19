@@ -1,0 +1,42 @@
+@use "type-face.scss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+body {
+    @apply w-screen h-screen;
+
+    margin: 0;
+    padding: 0;
+}
+
+#app {
+    min-width: 100%;
+    min-height: 100%;
+}
+section {
+    min-width: 100%;
+    min-height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+span {
+    width: fit-content;
+    height: fit-content;
+}
+
+* {
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+a {
+    @apply text-orange-accent;
+    &:hover {
+        @apply outline-orange-accent outline-1;
+    }
+}
