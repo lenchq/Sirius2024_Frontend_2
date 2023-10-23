@@ -20,11 +20,8 @@
         | SearchGridForm
 </script>
 
-{#if formData.type == "slider"}
-    <Slider
-        {...formData}
-        initial={[500, 700]}
-    />
+{#if formData.type === "slider"}
+    <Slider {...formData} initial={[500, 700]} />
 {:else if formData.type == "select-one"}
     {#each formData.options as option, i}
         <Select

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { formData } from "../store";
+    import { formData } from "../../lib/stores/boardingStore";
     import { get } from "svelte/store";
 
 </script>
