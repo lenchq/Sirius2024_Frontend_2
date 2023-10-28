@@ -1,0 +1,15 @@
+.atext {
+    h1 {
+        font-size:20px !important;
+    }
+    p, ul {
+        list-style: revert;
+        padding: revert;
+        margin: revert;
+    }
+    ul {
+        padding: revert;
+        padding-left: 30px;
+    }
+
+}

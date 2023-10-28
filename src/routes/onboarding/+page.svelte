@@ -1,16 +1,25 @@
 <script lang="ts">
     import { page } from "$app/stores"
     import Button from "$lib/components/Button.svelte"
-    import { formData } from "../../lib/stores/boardingStore";
+    import { formData } from "../../lib/stores/boardingStore"
     import FormPage from "./OnboardingForm.svelte"
     import { goto } from "$app/navigation"
 
-    let formNode: HTMLFormElement;
-    let formPageNode: FormPage;
+    let formNode: HTMLFormElement
+    let formPageNode: FormPage
 
-    let pageIndex = 0;
-    let totalPages = $page.data.pages.length;
-    let storeIndex: string[] = ["priceRange", "cookSkills", "meals", "breakfast", "dinner", "supper", "allergy", "tea"];
+    let pageIndex = 0
+    let totalPages = $page.data.pages.length
+    let storeIndex: string[] = [
+        "priceRange",
+        "cookSkills",
+        "meals",
+        "breakfast",
+        "dinner",
+        "supper",
+        "allergy",
+        "tea",
+    ]
 
     const fillBars = (num: number): boolean[] => {
         let res: boolean[] = []
@@ -20,32 +29,61 @@
         for (let i = 0; i < totalPages - num; i++) {
             res.push(false)
         }
-        return res;
+        return res
     }
 
+    const mealPages = new Map()
+    mealPages.set("Завтрак", 3)
+    mealPages.set("Обед", 4)
+    mealPages.set("Ужин", 5)
+    mealPages.set("Перекус", 6)
+
+    let selectedMealPages: number[] = []
+
     const handlePageInc = () => {
-        if (!formNode.checkValidity())
-            return;
+        if (!formNode.checkValidity()) return
         if (pageIndex + 1 == totalPages) {
             goto("/app")
-            return;
+            return
         }
-        
-        if (currPage.form.type === "select-multiple" || currPage.form.type === "grid" || currPage.form.type === "two-grid") {
-            let checked = document.querySelectorAll('input[type=checkbox]:checked');
+
+        if (
+            currPage.form.type === "select-multiple" ||
+            currPage.form.type === "grid" ||
+            currPage.form.type === "two-grid"
+        ) {
+            let checked = document.querySelectorAll(
+                "input[type=checkbox]:checked",
+            )
             if (checked.length < 1) {
-                return;
+                return
             }
         }
 
-        let data = new FormData(formNode);
+        let data = new FormData(formNode)
         //@ts-ignore
         formData[storeIndex[pageIndex]].set(Array.from(data.keys()))
 
-        pageIndex += 1;
+        if (pageIndex === 2) {
+            let mealData = Array.from(data.keys())
+            mealData.map((meal) => {
+                selectedMealPages.push(mealPages.get(meal))
+            })
+        }
+        if (pageIndex >= 2 && pageIndex < 7) {
+            let nextPage = selectedMealPages.shift()
+            if (nextPage) {
+                pageIndex = nextPage
+            } else {
+                pageIndex = 7
+            }
+            return;
+        }
+
+        pageIndex += 1
     }
 
-    $: currPage = $page.data.pages[pageIndex];
+    $: currPage = $page.data.pages[pageIndex]
     $: barData = fillBars(pageIndex + 1)
 </script>
 
@@ -55,9 +93,11 @@
 >
     <div class="flex gap-x-[5px] w-full min-h-[8px] h-2 mt-4 mb-4">
         {#each barData as isActive, i}
-            <!-- svelte-ignore a11y-no-static-element-interactions -->  
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
             <div
-                on:click={() => { pageIndex = i}}
+                on:click={() => {
+                    pageIndex = i
+                }}
                 on:keydown
                 class:active={isActive}
                 class="bar h-full w-full rounded-[5px] cursor-pointer"
@@ -69,8 +109,14 @@
         {currPage.title}
     </div>
 
-    <form bind:this={formNode} class="w-full px-1">
-        <FormPage bind:this={formPageNode} formData={currPage.form}/>
+    <form
+        bind:this={formNode}
+        class="w-full px-1"
+    >
+        <FormPage
+            bind:this={formPageNode}
+            formData={currPage.form}
+        />
     </form>
 
     <div class="w-full place-self-end mt-auto pb-4">

@@ -3,7 +3,6 @@
     import Button from "$lib/components/Button.svelte"
     import googleIcon from "$lib/assets/icons/google.svg"
     import "./style.scss"
-    import { fade } from "svelte/transition"
 </script>
 
 <section

@@ -4,7 +4,8 @@
     export let icon: any
     export let href: string
     export let title: string
-    export let fill: boolean = false;
+    export let fill: boolean = false
+    export let replace: any = null
     // export let selected: boolean;
 
     $: selected = $page.route.id === href
@@ -22,10 +23,14 @@
             class:fill={selected && fill}
             class:selected
         >
-            {@html icon}
+            {#if selected && replace}
+                {@html replace}
+            {:else}
+                {@html icon}
+            {/if}
         </div>
         <span
-            class="nav-text text-gray !font-[300]"
+            class="nav-text text-gray !font-[300] text-[15px]"
             class:selected
         >
             {title}
@@ -41,5 +46,4 @@
     .fill {
         fill: theme("colors.orange-accent");
     }
-    
 </style>

@@ -1,0 +1,10 @@
+@layer components {
+    .horscroll {
+        overflow-y: hidden;
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+        // scrollbar-width: none;
+    }
+}
